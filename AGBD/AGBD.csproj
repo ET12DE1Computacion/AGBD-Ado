@@ -12,6 +12,8 @@
     <Company>et12.edu.ar</Company>
     <Product>AGBD-Ado</Product>
     <Description>Proyecto para la implementación de SP y SF en MySQL</Description>
+    <PackageId>AGBD-Ado</PackageId>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
