@@ -6,6 +6,12 @@
 
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.9-aplha</Version>
+    <Authors>Luis Duran</Authors>
+    <Company>et12.edu.ar</Company>
+    <Product>AGBD-Ado</Product>
+    <Description>Proyecto para la implementación de SP y SF en MySQL</Description>
   </PropertyGroup>
 
   <ItemGroup>
