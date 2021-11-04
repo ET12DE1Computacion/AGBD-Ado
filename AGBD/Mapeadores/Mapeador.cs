@@ -1,4 +1,4 @@
-﻿using MySql.Data.MySqlClient;
+﻿using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -25,7 +25,7 @@ namespace et12.edu.ar.AGBD.Mapeadores
         /// <summary>
         /// Cadena que representa la tupa de atributos, formato (atr1, atr2, ... , atrN)
         /// </summary>
-        public string TuplaAtributos { get; set; }
+        public string TuplaAtributosInsert { get; set; }
 
         /// <summary>
         /// Método estatico para setear un comando
@@ -81,9 +81,9 @@ namespace et12.edu.ar.AGBD.Mapeadores
         /// </summary>
         /// <param name="lista">Lista de <c>T</c> para generar el INSERT</param>
         /// <returns></returns>
-        public string Insert(List<T> lista)
+        public virtual string Insert(List<T> lista)
         {
-            var sb = new StringBuilder($"INSERT INTO {Tabla} {TuplaAtributos} VALUES ");
+            var sb = new StringBuilder($"INSERT INTO {Tabla} {TuplaAtributosInsert} VALUES ");
             sb.Append('(')
               .Append(TuplaValor(lista[0]))
               .Append(')');
