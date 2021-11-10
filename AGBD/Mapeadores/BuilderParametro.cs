@@ -13,6 +13,8 @@ namespace et12.edu.ar.AGBD.Mapeadores
         /// Parámetro que usa la clase para configurar y devolver.
         /// </summary>
         public MySqlParameter Parametro { get; private set; }
+        private IMapConParametros Mapeador {get; set;}
+        internal BuilderParametro(IMapConParametros maper) => Mapeador = maper;
 
         /// <summary>
         /// Método que instancia a Parametro. Por defecto la dirección es Input y valor DBNull
@@ -137,6 +139,16 @@ namespace et12.edu.ar.AGBD.Mapeadores
         {
             Parametro.Size = longitud;
             return this;
+        }
+
+        /// <summary>
+        /// Método que agrega el parámetro en construcción al mapeador asociado.
+        /// </summary>
+        /// <returns>Devuelve el parametro construido</returns>
+        public MySqlParameter AgregarParametro()
+        {
+            Mapeador.AgregarParametro(Parametro);
+            return Parametro;
         }
     }
 }

@@ -33,14 +33,15 @@ namespace et12.edu.ar.AGBD.Ado
         }
 
         /// <summary>
-        /// Abre la conexión, ejecuta el comando y cierra la conexión.
+        /// Abre la conexión, ejecuta el comando pasado como parámetro y cierra la conexión.
         /// </summary>
-        public void EjecutarComando()
+        /// <param name="comando">Comando configurado a ejecutar.</param>
+        public void EjecutarComando(MySqlCommand comando)
         {
             try
             {
                 Conexion.Open();
-                Comando.ExecuteNonQuery();
+                comando.ExecuteNonQuery();
                 Conexion.Close();
             }
             catch (Exception e)
@@ -52,6 +53,11 @@ namespace et12.edu.ar.AGBD.Ado
                 Conexion.Close();
             }
         }
+
+        /// <summary>
+        /// Abre la conexión, ejecuta el comando de AdoAGBD y cierra la conexión.
+        /// </summary>
+        public void EjecutarComando() => EjecutarComando(Comando);
 
         /// <summary>
         /// Método que en base al nombre de un SP, devuelve la Tabla que trae el SP.
@@ -131,6 +137,14 @@ namespace et12.edu.ar.AGBD.Ado
             }
             EjecutarComando();
             return Comando.Parameters[indiceSalida].Value;
+        }
+
+        internal DataTable TablaDirecta(MySqlCommand comando)
+        {
+            var tabla = new DataTable();
+            Adaptador = new MySqlDataAdapter(comando);
+            Adaptador.Fill(tabla);
+            return tabla;
         }
 
         /// <summary>

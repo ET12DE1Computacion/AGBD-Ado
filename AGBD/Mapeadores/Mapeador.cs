@@ -3,19 +3,32 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using et12.edu.ar.AGBD.Ado;
 
 namespace et12.edu.ar.AGBD.Mapeadores
 {
     /// <summary>
     /// Clase abstracta y genérica para facilitar las configuraciones del mapeo de clases
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public abstract class Mapeador<T>
+    /// <typeparam name="T">El elemento sobre el que va a trabajar el Mapeador</typeparam>
+    public abstract class Mapeador<T>: IMapConParametros
     {
         /// <summary>
         /// Instancia de BuilderParametro del mapeador.
         /// </summary>
-        public BuilderParametro BP { get; private set; } = new BuilderParametro();
+        public BuilderParametro BP { get; private set; }
+        
+        /// <summary>
+        /// Instancia de AdoAGBD que consume el mapeador.
+        /// </summary>
+        /// <value></value>
+        public AdoAGBD AdoAGBD { get; set; }
+
+        /// <summary>
+        /// Comando asociado al mapeador.
+        /// </summary>
+        /// <value></value>
+        public MySqlCommand Comando { get; private set; }
         
         /// <summary>
         /// Nombre de la tabla asociada a la Clase
@@ -28,29 +41,58 @@ namespace et12.edu.ar.AGBD.Mapeadores
         public string TuplaAtributos { get; set; }
 
         /// <summary>
+        /// Constructor de la clase.
+        /// </summary>
+        /// <param name="ado">Instancia de AdoAGBD que consume el mapeador</param>
+        public Mapeador(AdoAGBD ado)
+        {
+            AdoAGBD = ado;
+            Comando = new MySqlCommand(){Connection = ado.Conexion};
+            BP = new BuilderParametro(this);
+        }
+
+        /// <summary>
         /// Método estatico para setear un comando
         /// </summary>
-        /// <param name="comando">Comando al que hay que asignar</param>
         /// <param name="nombre">Nombre del Stored Procedure/Function</param>
-        public static void SetComandoSP(MySqlCommand comando, string nombre)
+        public void SetComandoSP(string nombre)
         {
-            comando.CommandType = CommandType.StoredProcedure;
-            comando.CommandText = nombre;
-            comando.Parameters.Clear();
+            Comando.CommandType = CommandType.StoredProcedure;
+            Comando.CommandText = nombre;
+            Comando.Parameters.Clear();
         }
 
         /// <summary>
         /// Método para asignar a comando, en base a una acción de seteo 
         /// </summary>
-        /// <param name="comando"></param>
-        /// <param name="accionSeteo"></param>
-        /// <param name="elemento"></param>
-        public virtual void SetComandoPara(MySqlCommand comando, Action<T> accionSeteo, T elemento)
+        /// <param name="nombre">Nombre del SP</param>
+        /// <param name="preEjecucion">Método a ejecutar previo a la ejecucion del SP</param>
+        /// <param name="elemento">Elemento del mapeador</param>
+        public virtual void EjecutarComandoCon(string nombre, Action<T> preEjecucion, T elemento)
         {
-            comando.CommandType = CommandType.StoredProcedure;
-            comando.Parameters.Clear();
-            accionSeteo(elemento);
+            SetComandoSP(nombre);
+            preEjecucion(elemento);
+            AdoAGBD.EjecutarComando(Comando);
         }
+
+        /// <summary>
+        /// Método para asignar a comando, en base a una acción de seteo 
+        /// </summary>
+        /// <param name="nombre">Nombre del SP</param>
+        /// <param name="preEjecucion">Método a ejecutar previo a la ejecucion del SP</param>
+        /// <param name="postEjecucion">Método a ejecutar posterior a la ejecucion del SP</param>
+        /// <param name="elemento">Elemento del mapeador</param>
+        public virtual void EjecutarComandoCon(string nombre, Action<T> preEjecucion, Action<T> postEjecucion,T elemento)
+        {
+            EjecutarComandoCon(nombre, preEjecucion, elemento);
+            postEjecucion(elemento);
+        }
+
+        /// <summary>
+        /// Método que agrega un parametro a la lista de parametros del comando del mapeador.
+        /// </summary>
+        /// <param name="parametro">Parámetro a agregar.</param>
+        public void AgregarParametro(MySqlParameter parametro) => Comando.Parameters.Add(parametro);
         
         /// <summary>
         /// Método que en base a <c>T</c>, mapea la tabla a una colección.
@@ -67,6 +109,19 @@ namespace et12.edu.ar.AGBD.Mapeadores
                 lista.Add(elemento);
             }
             return lista;
+        }
+
+        /// <summary>
+        /// Método para traer una tabla en base al nombre de la misma.
+        /// </summary>
+        /// <returns>Tabla devuelta.</returns>
+        public List<T> ColeccionDesdeTabla()
+        {
+            Comando.Parameters.Clear();
+            Comando.CommandType = CommandType.TableDirect;
+            Comando.CommandText = Tabla;
+
+            return ColeccionDesdeTabla(AdoAGBD.TablaDirecta(Comando));
         }
 
         /// <summary>
@@ -103,5 +158,14 @@ namespace et12.edu.ar.AGBD.Mapeadores
         /// <param name="t">Objeto del tipo <c>T</c> que se pretende parsear.</param>
         /// <returns>Cadena de la tupla de valores SIN los parentesis.</returns>
         public virtual string TuplaValor(T t) => "";
+
+        /// <summary>
+        /// Método para obtener un parametro del mapeador en base a su nombre.
+        /// </summary>
+        /// <param name="nombre">Nombre del parametro a buscar.</param>
+        /// <returns>Parametro solicitado.</returns>
+        public MySqlParameter GetParametro(string nombre) => Comando.Parameters[nombre];
+        void IMapConParametros.AgregarParametro(MySqlParameter parametro)
+            => AgregarParametro(parametro);
     }
 }
