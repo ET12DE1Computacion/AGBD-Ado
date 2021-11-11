@@ -7,7 +7,7 @@
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.9-aplha</Version>
+    <Version>0.10-aplha</Version>
     <Authors>Luis Duran</Authors>
     <Company>et12.edu.ar</Company>
     <Product>AGBD-Ado</Product>
@@ -19,6 +19,8 @@
     <PackageIcon>Logo.png</PackageIcon>
     <PackageIconUrl />
     <PackageTags>et12, san martin, computacion, et12.edu.ar, AGBD</PackageTags>
+    <AssemblyVersion>0.10.0.0</AssemblyVersion>
+    <FileVersion>0.10.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
