@@ -139,7 +139,7 @@ namespace et12.edu.ar.AGBD.Ado
             return Comando.Parameters[indiceSalida].Value;
         }
 
-        internal DataTable TablaDirecta(MySqlCommand comando)
+        internal DataTable TablaPorComando(MySqlCommand comando)
         {
             var tabla = new DataTable();
             Adaptador = new MySqlDataAdapter(comando);
