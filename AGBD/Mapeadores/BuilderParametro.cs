@@ -133,7 +133,7 @@ namespace et12.edu.ar.AGBD.Mapeadores
         /// <summary>
         /// Método que setea la longitud al Parametro.
         /// </summary>
-        /// <param name="longitud">Longitud del parametro</param>
+        /// <param name="longitud">Longitud del Parametro</param>
         /// <returns>BuilderParametro para encadenar con otros métodos</returns>
         public BuilderParametro SetLongitud(int longitud)
         {

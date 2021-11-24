@@ -102,8 +102,8 @@ namespace et12.edu.ar.AGBD.Ado
         /// Método para ejecutar una Función Almacenada
         /// </summary>
         /// <param name="nombreSF">Nombre de la Función Almacenada</param>
-        /// <param name="configurarComandoSF">Método que configura el parametro</param>
-        /// <param name="setSalida">Opcion que indica si se deja un parametro de salida por defecto</param>
+        /// <param name="configurarComandoSF">Método que configura el parámetro</param>
+        /// <param name="setSalida">Opcion que indica si se deja un parámetro de salida por defecto</param>
         /// <returns>object que representa el escalar devuelto por la Función Almacenada</returns>
         public object EjecutarSF (string nombreSF, Action<MySqlCommand> configurarComandoSF, bool setSalida = true)
         {
@@ -133,7 +133,7 @@ namespace et12.edu.ar.AGBD.Ado
             }
             if (i == Comando.Parameters.Count)
             {
-                throw new Exception("No hay parametro de retorno");
+                throw new Exception("No hay parámetro de retorno");
             }
             EjecutarComando();
             return Comando.Parameters[indiceSalida].Value;

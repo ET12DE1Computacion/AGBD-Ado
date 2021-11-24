@@ -1,7 +1,5 @@
-using System;
-using Xunit;
 using et12.edu.ar.AGBD.Ado;
-using System.Linq;
+using Xunit;
 
 namespace AGBD.Test
 {
@@ -17,9 +15,9 @@ namespace AGBD.Test
         [Fact]
         public void AltaRubro()
         {
-            var rubro = new Rubro("Lacteo");
+            var rubro = new Rubro("Limpieza");
             Ado.AltaRubro(rubro);
-            Assert.Equal(2, rubro.Id);
+            Assert.Equal(3, rubro.Id);
         }
 
         [Fact]
@@ -28,7 +26,5 @@ namespace AGBD.Test
             var rubros = Ado.ObtenerRubros();
             Assert.Contains(rubros, r => r.Id == 1 && r.Nombre == "Gaseosa");
         }
-
-
     }
 }

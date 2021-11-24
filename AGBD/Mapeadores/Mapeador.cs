@@ -52,7 +52,8 @@ namespace et12.edu.ar.AGBD.Mapeadores
         }
 
         /// <summary>
-        /// Método estatico para setear un comando
+        /// Método estatico para setear un comando.
+        /// Inicializa la lista de parámetros.
         /// </summary>
         /// <param name="nombre">Nombre del Stored Procedure/Function</param>
         public void SetComandoSP(string nombre)
@@ -63,7 +64,7 @@ namespace et12.edu.ar.AGBD.Mapeadores
         }
 
         /// <summary>
-        /// Método para asignar a comando, en base a una acción de seteo 
+        /// Método para asignar a comando, en base a una acción de seteo. 
         /// </summary>
         /// <param name="nombre">Nombre del SP</param>
         /// <param name="preEjecucion">Método a ejecutar previo a la ejecucion del SP</param>
@@ -89,7 +90,7 @@ namespace et12.edu.ar.AGBD.Mapeadores
         }
 
         /// <summary>
-        /// Método que agrega un parametro a la lista de parametros del comando del mapeador.
+        /// Método que agrega un parámetro a la lista de parámetros del comando del mapeador.
         /// </summary>
         /// <param name="parametro">Parámetro a agregar.</param>
         public void AgregarParametro(MySqlParameter parametro) => Comando.Parameters.Add(parametro);
@@ -178,10 +179,10 @@ namespace et12.edu.ar.AGBD.Mapeadores
         public virtual string TuplaValor(T t) => "";
 
         /// <summary>
-        /// Método para obtener un parametro del mapeador en base a su nombre.
+        /// Método para obtener un parámetro del mapeador en base a su nombre.
         /// </summary>
-        /// <param name="nombre">Nombre del parametro a buscar.</param>
-        /// <returns>Parametro solicitado.</returns>
+        /// <param name="nombre">Nombre del parámetro a buscar.</param>
+        /// <returns>Parámetro solicitado.</returns>
         public MySqlParameter GetParametro(string nombre) => Comando.Parameters[nombre];
         void IMapConParametros.AgregarParametro(MySqlParameter parametro)
             => AgregarParametro(parametro);

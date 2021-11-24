@@ -11,6 +11,15 @@ BEGIN
 END $$
 
 DELIMITER $$
+DROP PROCEDURE IF EXISTS RubroPorId $$
+CREATE PROCEDURE RubroPorId (unIdRubro TINYINT UNSIGNED)
+BEGIN
+	SELECT  idRubro, rubro
+    FROM    Rubro
+    WHERE   idRubro = unIdRubro;
+END $$
+
+DELIMITER $$
 DROP PROCEDURE IF EXISTS altaProducto $$
 CREATE PROCEDURE altaProducto (OUT unIdProducto SMALLINT, unIdRubro TINYINT UNSIGNED,
                     unNombre VARCHAR(45), unPrecioUnitario DECIMAL(7,2), unaCantidad SMALLINT UNSIGNED)
@@ -18,6 +27,15 @@ BEGIN
 	INSERT INTO Producto(idRubro, nombre, precioUnitario, cantidad)
                 VALUE   (unIdRubro, unNombre, unPrecioUnitario, unaCantidad);
 	SET unIdProducto = LAST_INSERT_ID();
+END $$
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS ProductosPorRubro $$
+CREATE PROCEDURE ProductosPorRubro (unIdRubro TINYINT UNSIGNED)
+BEGIN
+	SELECT  idProducto, idRubro, nombre, cantidad, precioUnitario
+    FROM    Producto
+    WHERE   idRubro = unIdRubro;
 END $$
 
 DELIMITER $$

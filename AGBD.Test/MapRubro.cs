@@ -34,6 +34,18 @@ namespace AGBD.Test
               .AgregarParametro();
         }
 
+        internal Rubro RubroPorId(byte id)
+        {
+            SetComandoSP("RubroPorId");
+
+            BP.CrearParametro("unIdRubro")
+              .SetTipo(MySql.Data.MySqlClient.MySqlDbType.Byte)
+              .SetValor(id)
+              .AgregarParametro();
+
+            return ElementoDesdeSP();
+        }
+
         public void PostAltaRubro(Rubro rubro)
         {
             var paramIdRubro = GetParametro("unIdRubro");
