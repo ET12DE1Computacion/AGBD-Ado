@@ -27,7 +27,7 @@ git clone https://github.com/ET12DE1Computacion/AGBD-Ado
 Situate en tu proyecto C# e ingrese en la terminal:
 
 ```bash
-dotnet add package et12.edu.ar.AGBD-Ado --version 0.9.0-aplha
+dotnet add package et12.edu.ar.AGBD-Ado --version 1.0.0
 ```
 
 Recuerda que al momento de volver a trabajar con tu proyecto despues de clonar, ejecutar el comando:
