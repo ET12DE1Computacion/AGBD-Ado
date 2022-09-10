@@ -1,7 +1,6 @@
-namespace et12.edu.ar.AGBD.Mapeadores
+namespace et12.edu.ar.AGBD.Mapeadores;
+
+internal interface IMapConParametros
 {
-    internal interface IMapConParametros
-    {
-        void AgregarParametro(MySql.Data.MySqlClient.MySqlParameter parametro);
-    }
+    void AgregarParametro(MySql.Data.MySqlClient.MySqlParameter parametro);
 }
