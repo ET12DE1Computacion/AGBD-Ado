@@ -1,26 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using et12.edu.ar.AGBD.Ado;
+﻿using et12.edu.ar.AGBD.Ado;
 
-namespace AGBD.Test
+namespace AGBD.Test;
+public class AdoTest
 {
-    public class AdoTest
+    public AdoAGBD Ado { get; set; }
+    public MapRubro MapRubro { get; set; }
+    public MapProducto MapProducto { get; set; }
+    public AdoTest(AdoAGBD ado)
     {
-        public AdoAGBD Ado { get; set; }
-        public MapRubro MapRubro { get; set; }
-        public MapProducto MapProducto { get; set; }
-        public AdoTest(AdoAGBD ado)
-        {
-            Ado = ado;
-            MapRubro = new MapRubro(Ado);
-            MapProducto = new MapProducto(MapRubro);
-        }
-        public void AltaRubro(Rubro rubro) => MapRubro.AltaRubro(rubro);
-        public List<Rubro> ObtenerRubros() => MapRubro.ObtenerRubros();
-        public List<Producto> ObtenerProductos() => MapProducto.ObtenerProductos();
-        public List<Producto> ObtenerProductos(Rubro rubro)
-            => MapProducto.ObtenerProductos(rubro);
-        public void AltaProducto(Producto producto) => MapProducto.AltaProducto(producto);
-
+        Ado = ado;
+        MapRubro = new MapRubro(Ado);
+        MapProducto = new MapProducto(MapRubro);
     }
+    public void AltaRubro(Rubro rubro) => MapRubro.AltaRubro(rubro);
+    public List<Rubro> ObtenerRubros() => MapRubro.ObtenerRubros();
+    public List<Producto> ObtenerProductos() => MapProducto.ObtenerProductos();
+    public List<Producto> ObtenerProductos(Rubro rubro)
+        => MapProducto.ObtenerProductos(rubro);
+    public void AltaProducto(Producto producto) => MapProducto.AltaProducto(producto);
+
 }

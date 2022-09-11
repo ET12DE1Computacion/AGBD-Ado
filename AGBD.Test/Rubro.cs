@@ -1,10 +1,9 @@
-namespace AGBD.Test
+namespace AGBD.Test;
+
+public class Rubro
 {
-    public class Rubro
-    {
-        public byte Id { get; set; }
-        public string Nombre { get; set; }
-        public Rubro() {}
-        public Rubro(string nombre) => Nombre = nombre;
-    }
+    public byte Id { get; set; }
+    public string Nombre { get; set; }
+    public Rubro() {}
+    public Rubro(string nombre) => Nombre = nombre;
 }
