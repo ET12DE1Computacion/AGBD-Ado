@@ -4,7 +4,7 @@ using System.Data;
 
 namespace AGBD.Test;
 
-public class MapRubro: Mapeador<Rubro>
+public class MapRubro : Mapeador<Rubro>
 {
     public MapRubro(AdoAGBD ado) : base(ado) => Tabla = "Rubro";
     public override Rubro ObjetoDesdeFila(DataRow fila)

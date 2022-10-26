@@ -18,10 +18,12 @@ public class RubroTest
         Assert.Equal(3, rubro.Id);
     }
 
-    [Fact]
-    public void TraerRubros()
+    [Theory]
+    [InlineData(1, "Gaseosa")]
+    [InlineData(2, "Lacteo")]
+    public void TraerRubros(byte id, string nombre)
     {
         var rubros = Ado.ObtenerRubros();
-        Assert.Contains(rubros, r => r.Id == 1 && r.Nombre == "Gaseosa");
+        Assert.Contains(rubros, r => r.Id == id && r.Nombre == nombre);
     }
 }
