@@ -215,32 +215,34 @@ public abstract class Mapeador<T> : IMapConParametros
     public MySqlParameter GetParametro(string nombre) => Comando.Parameters[nombre];
     void IMapConParametros.AgregarParametro(MySqlParameter parametro)
         => AgregarParametro(parametro);
-    
+
     /// <summary>
     /// Metodo para obtener filas filtradas por igualdad en base al diccionario que recibe
     /// </summary>
     /// <param name="diccionario">Diccionario con nombre de atributo-valor</param>
     /// <returns>Colección instanciada de <c>T</c> en base a <c>ObjetoDesdeFila</c></returns>
-    public List<T> FilasFiltradas (Dictionary<string, object> diccionario)
+    public List<T> FilasFiltradas(Dictionary<string, object> diccionario)
     {
-        List<T> lista = null;
-        if(diccionario.Count==0)
+        if (diccionario.Count == 0)
             throw new ArgumentException("El diccionario debe tener al menos 1 elemento");
-        
-        var queryBuilder = new StringBuilder($"SELECT * FROM ").Append(Tabla);
-        queryBuilder.AppendLine().Append("WHERE ");
+
+        var queryBuilder = new StringBuilder("SELECT * FROM\t").Append(Tabla);
+        queryBuilder.AppendLine().Append("WHERE\t");
         var primero = true;
         foreach (var entrada in diccionario)
         {
             if (!primero)
-            {
-                queryBuilder.AppendLine();
-                queryBuilder.Append("AND\t");
-            }else
+                queryBuilder.AppendLine().Append("AND\t");
+            else
                 primero = false;
             queryBuilder.Append(entrada.Key).Append(" = ").Append(entrada.Value);
         }
-        
-        return lista;
+
+        Comando.Parameters.Clear();
+        Comando.CommandType = CommandType.Text;
+        Comando.CommandText = queryBuilder.ToString();
+
+        var tabla = AdoAGBD.TablaPorComando(Comando);
+        return ColeccionDesdeTabla(tabla);
     }
 }
