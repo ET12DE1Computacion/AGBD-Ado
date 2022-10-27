@@ -9,7 +9,7 @@ namespace et12.edu.ar.AGBD.Mapeadores;
 /// Clase abstracta y genérica para facilitar las configuraciones del mapeo de clases
 /// </summary>
 /// <typeparam name="T">El elemento sobre el que va a trabajar el Mapeador</typeparam>
-public abstract class Mapeador<T> : IMapConParametros
+public abstract class Mapeador<T> : IMapConParametros where T : class
 {
     /// <summary>
     /// Instancia de BuilderParametro del mapeador.
@@ -36,7 +36,7 @@ public abstract class Mapeador<T> : IMapConParametros
     /// <summary>
     /// Cadena que representa la tupa de atributos, formato (atr1, atr2, ... , atrN)
     /// </summary>
-    public string TuplaAtributos { get; set; }
+    public string TuplaAtributos { get; set; } = null!;
 
     /// <summary>
     /// Constructor de la clase.
@@ -47,6 +47,7 @@ public abstract class Mapeador<T> : IMapConParametros
         AdoAGBD = ado;
         Comando = new MySqlCommand() { Connection = ado.Conexion };
         BP = new BuilderParametro(this);
+        Tabla = "";
     }
 
     /// <summary>
@@ -217,11 +218,70 @@ public abstract class Mapeador<T> : IMapConParametros
         => AgregarParametro(parametro);
 
     /// <summary>
-    /// Metodo para obtener filas filtradas por igualdad en base al diccionario que recibe
+    /// Método para obtener filas filtradas por igualdad en base al diccionario que recibe
+    /// </summary>
+    /// <param name="diccionario">Diccionario con nombre de atributo-valor</param>
+    /// <returns>DataTable asociada a la consulta</returns>
+    public DataTable FilasFiltradasRAW(Dictionary<string, object> diccionario)
+    {
+        PrepararComandoFilasFiltradas(diccionario);
+        return AdoAGBD.TablaPorComando(Comando);
+    }
+
+    /// <summary>
+    /// Método para obtener filas filtradas por igualdad en base a un atributo y valor
+    /// </summary>
+    /// <param name="atributo">Nombre del atributo a filtrar</param>
+    /// <param name="valor">Valor para filtrar</param>
+    /// <returns>DataTable asociada a la consulta</returns>
+    public DataTable FilasFiltradasRAW(string atributo, object valor)
+        => FilasFiltradasRAW(DiccionarioPara(atributo, valor));
+
+    /// <summary>
+    /// Método para obtener filas filtradas por igualdad en base al diccionario que recibe
     /// </summary>
     /// <param name="diccionario">Diccionario con nombre de atributo-valor</param>
     /// <returns>Colección instanciada de <c>T</c> en base a <c>ObjetoDesdeFila</c></returns>
     public List<T> FilasFiltradas(Dictionary<string, object> diccionario)
+        => ColeccionDesdeTabla(FilasFiltradasRAW(diccionario));
+
+    /// <summary>
+    /// Método para obtener filas filtradas por igualdad en base a un atributo y valor.
+    /// </summary>
+    /// <param name="atributo">Nombre del atributo a filtrar</param>
+    /// <param name="valor">Valor para filtrar</param>
+    /// <returns>Colección instanciada de <c>T</c> en base a <c>ObjetoDesdeFila</c></returns>
+    public List<T> FilasFiltradas(string atributo, object valor)
+        => ColeccionDesdeTabla(FilasFiltradasRAW(atributo, valor));
+
+    /// <summary>
+    /// Método para obtener una fila filtrada por igualdad en base a un atributo y valor.
+    /// </summary>
+    /// <param name="atributo">Nombre del atributo a filtrar</param>
+    /// <param name="valor">Valor para filtrar</param>
+    /// <returns>Objecto del tipo <c>T</c>. Tambien puede ser <c>NULL</c>.</returns>
+    public T? FiltrarPorPK(string atributo, object valor)
+        => FiltrarPorPK(DiccionarioPara(atributo, valor));
+
+    /// <summary>
+    /// Método para obtener una fila filtrada por igualdad en base al diccionario que recibe.
+    /// </summary>
+    /// <param name="diccionario">Diccionario con nombre de atributo-valor</param>
+    /// <returns>Objecto del tipo <c>T</c>. Tambien puede ser <c>NULL</c>.</returns>
+    public T? FiltrarPorPK(Dictionary<string, object> diccionario)
+    {
+        var coleccion = FilasFiltradas(diccionario);
+        return coleccion.Count == 0 ? null : coleccion[0];
+    }
+
+    private Dictionary<string, object> DiccionarioPara(string atributo, object valor)
+    {
+        var diccionario = new Dictionary<string, object>();
+        diccionario.Add(atributo, valor);
+        return diccionario;
+    }
+
+    private void PrepararComandoFilasFiltradas(Dictionary<string, object> diccionario)
     {
         if (diccionario.Count == 0)
             throw new ArgumentException("El diccionario debe tener al menos 1 elemento");
@@ -241,8 +301,5 @@ public abstract class Mapeador<T> : IMapConParametros
         Comando.Parameters.Clear();
         Comando.CommandType = CommandType.Text;
         Comando.CommandText = queryBuilder.ToString();
-
-        var tabla = AdoAGBD.TablaPorComando(Comando);
-        return ColeccionDesdeTabla(tabla);
     }
 }

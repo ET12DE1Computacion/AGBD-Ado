@@ -31,14 +31,9 @@ public class MapRubro : Mapeador<Rubro>
 
     internal Rubro RubroPorId(byte id)
     {
-        SetComandoSP("RubroPorId");
+        var rubros = FilasFiltradas("idRubro", id);
 
-        BP.CrearParametro("unIdRubro")
-          .SetTipo(MySql.Data.MySqlClient.MySqlDbType.Byte)
-          .SetValor(id)
-          .AgregarParametro();
-
-        return ElementoDesdeSP();
+        return rubros[0];
     }
 
     public void PostAltaRubro(Rubro rubro)

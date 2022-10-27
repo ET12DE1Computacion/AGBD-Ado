@@ -36,4 +36,14 @@ public class ProductoTest
         Assert.Contains(productos, p => p.Nombre == "Armonia 1L." && p.Cantidad == 49);
 
     }
+
+    [Fact]
+    public void FiltrarProductos()
+    {
+        var productosFiltrados = Ado.FiltrarProductos("idRubro", 1);
+        var cantidadProductos = productosFiltrados.Count;
+        Assert.Equal(2, cantidadProductos);
+        Assert.All(productosFiltrados, pf => pf.Rubro.Id = 1);
+    }
+
 }

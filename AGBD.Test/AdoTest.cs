@@ -18,5 +18,7 @@ public class AdoTest
     public List<Producto> ObtenerProductos(Rubro rubro)
         => MapProducto.ObtenerProductos(rubro);
     public void AltaProducto(Producto producto) => MapProducto.AltaProducto(producto);
+    public List<Producto> FiltrarProductos(string atributo, object valor)
+        => MapProducto.FilasFiltradas(atributo, valor);
 
 }

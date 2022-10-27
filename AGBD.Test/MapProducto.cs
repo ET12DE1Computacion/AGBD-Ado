@@ -14,7 +14,7 @@ public class MapProducto : Mapeador<Producto>
         Nombre = fila["nombre"].ToString(),
         Cantidad = Convert.ToUInt16(fila["cantidad"]),
         PrecioUnitario = Convert.ToDecimal(fila["precioUnitario"]),
-        Rubro = MapRubro.RubroPorId(Convert.ToByte(fila["idRubro"])),
+        Rubro = MapRubro.FiltrarPorPK("idRubro", Convert.ToByte(fila["idRubro"])),
         Id = Convert.ToInt16(fila["idProducto"])
     };
 

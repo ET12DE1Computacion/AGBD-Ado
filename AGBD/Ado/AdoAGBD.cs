@@ -23,7 +23,7 @@ public class AdoAGBD
     /// <summary>
     /// Adaptador del AdoAGBD
     /// </summary>
-    public MySqlDataAdapter Adaptador { get; set; }
+    public MySqlDataAdapter? Adaptador { get; set; }
     #endregion
     internal AdoAGBD(string cadena)
     {
@@ -149,7 +149,7 @@ public class AdoAGBD
     /// <param name="nombreSP">Nombre del Stored Procedure</param>
     /// <param name="mapeador">Clase que mapea T</param>
     /// <returns>Coleccion del tipo T</returns>
-    public List<T> ColeccionDesdeSP<T>(string nombreSP, Mapeador<T> mapeador)
+    public List<T> ColeccionDesdeSP<T>(string nombreSP, Mapeador<T> mapeador) where T : class
         => mapeador.ColeccionDesdeTabla(TablaDesdeSP(nombreSP));
 
     /// <summary>
@@ -160,7 +160,7 @@ public class AdoAGBD
     /// <param name="nombreSP">Nombre del Stored Procedure</param>
     /// <param name="mapeador">Clase que mapea T</param>
     /// <returns>Tarea con la Coleccion del tipo T</returns>
-    public async Task<List<T>> ColeccionDesdeSPAsync<T>(string nombreSP, Mapeador<T> mapeador)
+    public async Task<List<T>> ColeccionDesdeSPAsync<T>(string nombreSP, Mapeador<T> mapeador) where T : class
     {
         var tabla = await TablaDesdeSPAsync(nombreSP);
         return await Task<T>.Run(() => mapeador.ColeccionDesdeTabla(tabla));

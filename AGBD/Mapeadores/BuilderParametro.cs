@@ -11,8 +11,8 @@ public class BuilderParametro
     /// <summary>
     /// Parámetro que usa la clase para configurar y devolver.
     /// </summary>
-    public MySqlParameter Parametro { get; private set; }
-    private IMapConParametros Mapeador {get; set;}
+    public MySqlParameter Parametro { get; private set; } = null!;
+    private IMapConParametros Mapeador { get; set; }
     internal BuilderParametro(IMapConParametros maper) => Mapeador = maper;
 
     /// <summary>
@@ -48,7 +48,7 @@ public class BuilderParametro
     public BuilderParametro CrearParametroSalida(string nombre)
         => CrearParametro(nombre)
           .SetDireccion(ParameterDirection.Output)
-          .SetValor(null);
+          .SetValor(DBNull.Value);
 
     /// <summary>
     /// Método que setea un nombre al Parametro.
