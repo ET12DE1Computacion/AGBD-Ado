@@ -221,10 +221,11 @@ public abstract class Mapeador<T> : IMapConParametros where T : class
     /// Método para obtener filas filtradas por igualdad en base al diccionario que recibe
     /// </summary>
     /// <param name="diccionario">Diccionario con nombre de atributo-valor</param>
+    /// <param name="tabla">Nombre de la tabla, si se omita, se usa el nombre por defecto de la tabla del Mapeador</param>
     /// <returns>DataTable asociada a la consulta</returns>
-    public DataTable FilasFiltradasRAW(Dictionary<string, object> diccionario)
+    public DataTable FilasFiltradasRAW(Dictionary<string, object> diccionario, string? tabla = null)
     {
-        PrepararComandoFilasFiltradas(diccionario);
+        PrepararComandoFilasFiltradas(diccionario, tabla);
         return AdoAGBD.TablaPorComando(Comando);
     }
 
@@ -233,9 +234,10 @@ public abstract class Mapeador<T> : IMapConParametros where T : class
     /// </summary>
     /// <param name="atributo">Nombre del atributo a filtrar</param>
     /// <param name="valor">Valor para filtrar</param>
+    /// <param name="tabla">Nombre de la tabla, si se omita, se usa el nombre por defecto de la tabla del Mapeador</param>
     /// <returns>DataTable asociada a la consulta</returns>
-    public DataTable FilasFiltradasRAW(string atributo, object valor)
-        => FilasFiltradasRAW(DiccionarioPara(atributo, valor));
+    public DataTable FilasFiltradasRAW(string atributo, object valor, string? tabla = null)
+        => FilasFiltradasRAW(DiccionarioPara(atributo, valor), tabla);
 
     /// <summary>
     /// Método para obtener filas filtradas por igualdad en base al diccionario que recibe
@@ -281,12 +283,13 @@ public abstract class Mapeador<T> : IMapConParametros where T : class
         return diccionario;
     }
 
-    private void PrepararComandoFilasFiltradas(Dictionary<string, object> diccionario)
+    private void PrepararComandoFilasFiltradas(Dictionary<string, object> diccionario, string? tabla = null)
     {
         if (diccionario.Count == 0)
             throw new ArgumentException("El diccionario debe tener al menos 1 elemento");
 
-        var queryBuilder = new StringBuilder("SELECT * FROM\t").Append(Tabla);
+        var nombreTabla = tabla ?? Tabla;
+        var queryBuilder = new StringBuilder("SELECT * FROM\t").Append(nombreTabla);
         queryBuilder.AppendLine().Append("WHERE\t");
         var primero = true;
         foreach (var entrada in diccionario)

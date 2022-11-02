@@ -2,7 +2,7 @@
 
 <h1 align="center">E.T. Nº12 D.E. 1º "Libertador Gral. José de San Martín"</h1>
 <p align="center">
-  <img src="https://et12.edu.ar/imgs/et12.png">
+  <img src="https://et12.edu.ar/imgs/computacion/vamoaprogramabanner.png">
 </p>
 
 # ADO-AGBD
@@ -19,18 +19,18 @@ git clone https://github.com/ET12DE1Computacion/AGBD-Ado
 
 ### Pre-requisitos 📋
 
-- .NET 5.0.7 (SDK .NET 5.0.301) [Descargar](https://dotnet.microsoft.com/download/dotnet/5.0)
-- MySQL Server 5.7 [Descargar](https://dev.mysql.com/downloads/mysql/)
+- .NET 6.0.10 (SDK .NET 6.0.402) [Descargar](https://dotnet.microsoft.com/download/dotnet/6.0)
+- MySQL Server 8.0.31 [Descargar](https://dev.mysql.com/downloads/mysql/)
 
 ## Despliegue 📦
 
 Situate en tu proyecto C# e ingrese en la terminal:
 
 ```bash
-dotnet add package et12.edu.ar.AGBD-Ado --version 1.0.0
+dotnet add package et12.edu.ar.AGBD-Ado --version 2.2.0
 ```
 
-Recuerda que al momento de volver a trabajar con tu proyecto despues de clonar, ejecutar el comando:
+Recuerda que al momento de volver a trabajar con tu proyecto después de clonar, ejecutar el comando:
 
 ```bash
 dotnet restore
@@ -42,7 +42,9 @@ dotnet restore
 
 ## Wiki 📖
 
-Puedes encontrar mucho más de cómo utilizar este proyecto en nuestra [Wiki](https://github.com/ET12DE1Computacion/AGBD-Ado/wiki)
+Puedes encontrar mucho más de cómo utilizar este proyecto en nuestra [Wiki](https://github.com/ET12DE1Computacion/AGBD-Ado/wiki).
+
+También podes ver en detalle la estructura en [README.md](AGBD\README.md) 
 
 ## Versionado 📌
 
