@@ -27,10 +27,10 @@ git clone https://github.com/ET12DE1Computacion/AGBD-Ado
 Situate en tu proyecto C# e ingrese en la terminal:
 
 ```bash
-dotnet add package et12.edu.ar.AGBD-Ado --version 2.2.0
+dotnet add package et12.edu.ar.AGBD-Ado
 ```
 
-Recuerda que al momento de volver a trabajar con tu proyecto después de clonar, ejecutar el comando:
+**Recuerda** que al momento de volver a trabajar con tu proyecto después de clonar, ejecutar el comando:
 
 ```bash
 dotnet restore
@@ -44,7 +44,7 @@ dotnet restore
 
 Puedes encontrar mucho más de cómo utilizar este proyecto en nuestra [Wiki](https://github.com/ET12DE1Computacion/AGBD-Ado/wiki).
 
-También podes ver en detalle la estructura en [README.md](AGBD\README.md) 
+También podes ver en detalle la estructura en [README.md](AGBD/README.md) 
 
 ## Versionado 📌
 

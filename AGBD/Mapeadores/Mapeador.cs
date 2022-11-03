@@ -305,4 +305,26 @@ public abstract class Mapeador<T> : IMapConParametros where T : class
         Comando.CommandType = CommandType.Text;
         Comando.CommandText = queryBuilder.ToString();
     }
+
+    /// <summary>
+    /// Método para que en base a una Tabla Relacionante, poder obtener filas en base al actual Mapeador
+    /// </summary>
+    /// <param name="tablaRelacionante">Tabla Relacionante ya instanciada</param>
+    /// <param name="FKRelacionante">Nombre del atributo FK hacia la Tabla de nuestro actual <c>Mapeador</c></param>
+    /// <param name="PKdeT">Nombre de la PK de nuestro actual <c>Mapeador</c></param>
+    /// <returns>Lista del tipo <c>T</c>.</returns>
+    public List<T> ObtenerDesdeNN (DataTable tablaRelacionante, string FKRelacionante, string PKdeT)
+    {
+        if (!tablaRelacionante.Columns.Contains(FKRelacionante))
+            throw new ArgumentException($"La FK {FKRelacionante} no existe en la tabla {tablaRelacionante.TableName}");
+        var lista = new List<T>();
+        for (int i = 0; i < tablaRelacionante.Rows.Count; i++)
+        {
+            var valorPK = tablaRelacionante.Rows[i][FKRelacionante];
+            
+            //Como existe la FK en la Relacionante, por Integridad Referencial existe en FiltrarPorPK
+            lista.Add(FiltrarPorPK(PKdeT, valorPK)!);
+        }
+        return lista;
+    }
 }
