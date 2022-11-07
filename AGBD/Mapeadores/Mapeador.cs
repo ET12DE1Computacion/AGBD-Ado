@@ -63,7 +63,7 @@ public abstract class Mapeador<T> : IMapConParametros where T : class
     }
 
     /// <summary>
-    /// Método para asignar a comando, en base a una acción de seteo. 
+    /// Método para asignar un comando, en base a una acción de seteo. 
     /// </summary>
     /// <param name="nombre">Nombre del SP</param>
     /// <param name="preEjecucion">Método a ejecutar previo a la ejecucion del SP</param>
@@ -76,7 +76,21 @@ public abstract class Mapeador<T> : IMapConParametros where T : class
     }
 
     /// <summary>
-    /// Método para asignar a comando, en base a una acción de seteo 
+    /// Método para asignar un comando asincronicamente, en base a una acción de seteo.
+    /// </summary>
+    /// <param name="nombre"></param>
+    /// <param name="preEjeucion"></param>
+    /// <param name="elemento"></param>
+    /// <returns></returns>
+    public async Task EjecutarComandoAsync(string nombre, Action<T> preEjeucion, T elemento)
+    {
+        SetComandoSP(nombre);
+        preEjeucion(elemento);
+        await AdoAGBD.EjecutarComandoAsync(Comando);
+    }
+
+    /// <summary>
+    /// Método para asignar un comando, en base a una acción de seteo.
     /// </summary>
     /// <param name="nombre">Nombre del SP</param>
     /// <param name="preEjecucion">Método a ejecutar previo a la ejecucion del SP</param>
@@ -85,6 +99,19 @@ public abstract class Mapeador<T> : IMapConParametros where T : class
     public virtual void EjecutarComandoCon(string nombre, Action<T> preEjecucion, Action<T> postEjecucion, T elemento)
     {
         EjecutarComandoCon(nombre, preEjecucion, elemento);
+        postEjecucion(elemento);
+    }
+
+    /// <summary>
+    /// Método para asignar un comando asincronicamente, en base a una acción de seteo.
+    /// </summary>
+    /// <param name="nombre">Nombre del SP</param>
+    /// <param name="preEjecucion">Método a ejecutar previo a la ejecucion del SP</param>
+    /// <param name="postEjecucion">Método a ejecutar posterior a la ejecucion del SP</param>
+    /// <param name="elemento">Elemento del mapeador</param>
+    public async Task EjecutarComandoAsync(string nombre, Action<T> preEjecucion, Action<T> postEjecucion, T elemento)
+    {
+        await EjecutarComandoAsync(nombre, preEjecucion, elemento);
         postEjecucion(elemento);
     }
 
@@ -313,7 +340,7 @@ public abstract class Mapeador<T> : IMapConParametros where T : class
     /// <param name="FKRelacionante">Nombre del atributo FK hacia la Tabla de nuestro actual <c>Mapeador</c></param>
     /// <param name="PKdeT">Nombre de la PK de nuestro actual <c>Mapeador</c></param>
     /// <returns>Lista del tipo <c>T</c>.</returns>
-    public List<T> ObtenerDesdeNN (DataTable tablaRelacionante, string FKRelacionante, string PKdeT)
+    public List<T> ObtenerDesdeNN(DataTable tablaRelacionante, string FKRelacionante, string PKdeT)
     {
         if (!tablaRelacionante.Columns.Contains(FKRelacionante))
             throw new ArgumentException($"La FK {FKRelacionante} no existe en la tabla {tablaRelacionante.TableName}");
@@ -321,7 +348,7 @@ public abstract class Mapeador<T> : IMapConParametros where T : class
         for (int i = 0; i < tablaRelacionante.Rows.Count; i++)
         {
             var valorPK = tablaRelacionante.Rows[i][FKRelacionante];
-            
+
             //Como existe la FK en la Relacionante, por Integridad Referencial existe en FiltrarPorPK
             lista.Add(FiltrarPorPK(PKdeT, valorPK)!);
         }
