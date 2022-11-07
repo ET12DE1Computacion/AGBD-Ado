@@ -63,7 +63,7 @@ public abstract class Mapeador<T> : IMapConParametros where T : class
     }
 
     /// <summary>
-    /// Método para asignar a comando, en base a una acción de seteo. 
+    /// Método para asignar un comando, en base a una acción de seteo. 
     /// </summary>
     /// <param name="nombre">Nombre del SP</param>
     /// <param name="preEjecucion">Método a ejecutar previo a la ejecucion del SP</param>
@@ -76,7 +76,21 @@ public abstract class Mapeador<T> : IMapConParametros where T : class
     }
 
     /// <summary>
-    /// Método para asignar a comando, en base a una acción de seteo 
+    /// Método para asignar un comando asincronicamente, en base a una acción de seteo.
+    /// </summary>
+    /// <param name="nombre"></param>
+    /// <param name="preEjeucion"></param>
+    /// <param name="elemento"></param>
+    /// <returns></returns>
+    public async Task EjecutarComandoAsync(string nombre, Action<T> preEjeucion, T elemento)
+    {
+        SetComandoSP(nombre);
+        preEjeucion(elemento);
+        await AdoAGBD.EjecutarComandoAsync(Comando);
+    }
+
+    /// <summary>
+    /// Método para asignar un comando, en base a una acción de seteo.
     /// </summary>
     /// <param name="nombre">Nombre del SP</param>
     /// <param name="preEjecucion">Método a ejecutar previo a la ejecucion del SP</param>
@@ -85,6 +99,19 @@ public abstract class Mapeador<T> : IMapConParametros where T : class
     public virtual void EjecutarComandoCon(string nombre, Action<T> preEjecucion, Action<T> postEjecucion, T elemento)
     {
         EjecutarComandoCon(nombre, preEjecucion, elemento);
+        postEjecucion(elemento);
+    }
+
+    /// <summary>
+    /// Método para asignar un comando asincronicamente, en base a una acción de seteo.
+    /// </summary>
+    /// <param name="nombre">Nombre del SP</param>
+    /// <param name="preEjecucion">Método a ejecutar previo a la ejecucion del SP</param>
+    /// <param name="postEjecucion">Método a ejecutar posterior a la ejecucion del SP</param>
+    /// <param name="elemento">Elemento del mapeador</param>
+    public async Task EjecutarComandoAsync(string nombre, Action<T> preEjecucion, Action<T> postEjecucion, T elemento)
+    {
+        await EjecutarComandoAsync(nombre, preEjecucion, elemento);
         postEjecucion(elemento);
     }
 
@@ -230,6 +257,18 @@ public abstract class Mapeador<T> : IMapConParametros where T : class
     }
 
     /// <summary>
+    /// Método para obtener filas filtradas por igualdad en base al diccionario que recibe
+    /// </summary>
+    /// <param name="diccionario">Diccionario con nombre de atributo-valor</param>
+    /// <param name="tabla">Nombre de la tabla, si se omita, se usa el nombre por defecto de la tabla del Mapeador</param>
+    /// <returns>DataTable asociada a la consulta</returns>
+    public async Task<DataTable> FilasFiltradasRAWAsync(Dictionary<string, object> diccionario, string? tabla = null)
+    {
+        PrepararComandoFilasFiltradas(diccionario, tabla);
+        return await AdoAGBD.TablaPorComandoAsync(Comando);
+    }
+
+    /// <summary>
     /// Método para obtener filas filtradas por igualdad en base a un atributo y valor
     /// </summary>
     /// <param name="atributo">Nombre del atributo a filtrar</param>
@@ -240,12 +279,30 @@ public abstract class Mapeador<T> : IMapConParametros where T : class
         => FilasFiltradasRAW(DiccionarioPara(atributo, valor), tabla);
 
     /// <summary>
+    /// Método para obtener filas filtradas asincronicamente por igualdad en base a un atributo y valor
+    /// </summary>
+    /// <param name="atributo">Nombre del atributo a filtrar</param>
+    /// <param name="valor">Valor para filtrar</param>
+    /// <param name="tabla">Nombre de la tabla, si se omita, se usa el nombre por defecto de la tabla del Mapeador</param>
+    /// <returns>DataTable asociada a la consulta</returns>
+    public async Task<DataTable> FilasFiltradasRAWAsync(string atributo, object valor, string? tabla = null)
+        => await FilasFiltradasRAWAsync(DiccionarioPara(atributo, valor), tabla);
+
+    /// <summary>
     /// Método para obtener filas filtradas por igualdad en base al diccionario que recibe
     /// </summary>
     /// <param name="diccionario">Diccionario con nombre de atributo-valor</param>
     /// <returns>Colección instanciada de <c>T</c> en base a <c>ObjetoDesdeFila</c></returns>
     public List<T> FilasFiltradas(Dictionary<string, object> diccionario)
         => ColeccionDesdeTabla(FilasFiltradasRAW(diccionario));
+
+    /// <summary>
+    /// Método para obtener filas filtradas asincronicamente por igualdad en base al diccionario que recibe
+    /// </summary>
+    /// <param name="diccionario">Diccionario con nombre de atributo-valor</param>
+    /// <returns>Colección instanciada de <c>T</c> en base a <c>ObjetoDesdeFila</c></returns>
+    public async Task<List<T>> FilasFiltradasAsync(Dictionary<string, object> diccionario)
+        => await ColeccionDesdeTablaAsync();
 
     /// <summary>
     /// Método para obtener filas filtradas por igualdad en base a un atributo y valor.
@@ -257,6 +314,15 @@ public abstract class Mapeador<T> : IMapConParametros where T : class
         => ColeccionDesdeTabla(FilasFiltradasRAW(atributo, valor));
 
     /// <summary>
+    /// Método para obtener filas filtradas asincronicamente por igualdad en base a un atributo y valor.
+    /// </summary>
+    /// <param name="atributo">Nombre del atributo a filtrar</param>
+    /// <param name="valor">Valor para filtrar</param>
+    /// <returns>Colección instanciada de <c>T</c> en base a <c>ObjetoDesdeFila</c></returns>
+    public async Task<List<T>> FilasFiltradasAsync(string atributo, object valor)
+        => await ColeccionDesdeTablaAsync();
+
+    /// <summary>
     /// Método para obtener una fila filtrada por igualdad en base a un atributo y valor.
     /// </summary>
     /// <param name="atributo">Nombre del atributo a filtrar</param>
@@ -266,6 +332,15 @@ public abstract class Mapeador<T> : IMapConParametros where T : class
         => FiltrarPorPK(DiccionarioPara(atributo, valor));
 
     /// <summary>
+    /// Método para obtener una fila filtrada asincronicamente por igualdad en base a un atributo y valor.
+    /// </summary>
+    /// <param name="atributo">Nombre del atributo a filtrar</param>
+    /// <param name="valor">Valor para filtrar</param>
+    /// <returns>Objecto del tipo <c>T</c>. Tambien puede ser <c>NULL</c>.</returns>
+    public async Task<T?> FiltrarPorPKAsync(string atributo, object valor)
+        => await FiltrarPorPKAsync(DiccionarioPara(atributo, valor));
+
+    /// <summary>
     /// Método para obtener una fila filtrada por igualdad en base al diccionario que recibe.
     /// </summary>
     /// <param name="diccionario">Diccionario con nombre de atributo-valor</param>
@@ -273,6 +348,17 @@ public abstract class Mapeador<T> : IMapConParametros where T : class
     public T? FiltrarPorPK(Dictionary<string, object> diccionario)
     {
         var coleccion = FilasFiltradas(diccionario);
+        return coleccion.Count == 0 ? null : coleccion[0];
+    }
+
+    /// <summary>
+    /// Método para obtener una fila filtrada asincronicamente por igualdad en base al diccionario que recibe.
+    /// </summary>
+    /// <param name="dictionary">Diccionario con nombre de atributo-valor</param>
+    /// <returns>Objecto del tipo <c>T</c>. Tambien puede ser <c>NULL</c>.</returns>
+    public async Task<T?> FiltrarPorPKAsync(Dictionary<string, object> dictionary)
+    {
+        var coleccion = await FilasFiltradasAsync(dictionary);
         return coleccion.Count == 0 ? null : coleccion[0];
     }
 
@@ -313,7 +399,7 @@ public abstract class Mapeador<T> : IMapConParametros where T : class
     /// <param name="FKRelacionante">Nombre del atributo FK hacia la Tabla de nuestro actual <c>Mapeador</c></param>
     /// <param name="PKdeT">Nombre de la PK de nuestro actual <c>Mapeador</c></param>
     /// <returns>Lista del tipo <c>T</c>.</returns>
-    public List<T> ObtenerDesdeNN (DataTable tablaRelacionante, string FKRelacionante, string PKdeT)
+    public List<T> ObtenerDesdeNN(DataTable tablaRelacionante, string FKRelacionante, string PKdeT)
     {
         if (!tablaRelacionante.Columns.Contains(FKRelacionante))
             throw new ArgumentException($"La FK {FKRelacionante} no existe en la tabla {tablaRelacionante.TableName}");
@@ -321,7 +407,7 @@ public abstract class Mapeador<T> : IMapConParametros where T : class
         for (int i = 0; i < tablaRelacionante.Rows.Count; i++)
         {
             var valorPK = tablaRelacionante.Rows[i][FKRelacionante];
-            
+
             //Como existe la FK en la Relacionante, por Integridad Referencial existe en FiltrarPorPK
             lista.Add(FiltrarPorPK(PKdeT, valorPK)!);
         }
