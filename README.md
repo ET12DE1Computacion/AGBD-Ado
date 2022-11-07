@@ -50,9 +50,12 @@ También podes ver en detalle la estructura en [README.md](AGBD/README.md)
 
 Usamos [SemVer](http://semver.org/) para el versionado. Para todas las versiones disponibles, mira los [tags en este repositorio](https://github.com/ET12DE1Computacion/AGBD-Ado/tags).
 
-## Autores ✒️
+## Autor ✒️
 
-* **Luis Duran** - *Desarrollo* - [luchoxx87](https://github.com/luchoxx87)
+- **Luis Duran** - *Desarrollo* - [luchoxx87](https://github.com/luchoxx87)
+
+## Contribuciones 🤝🏽
+- **Beymar León ([LeonFBeymar](https://github.com/LeonFBeymar))** - En [#1](https://github.com/ET12DE1Computacion/AGBD-Ado/pull/1)
 
 ## Licencia 📄
 
