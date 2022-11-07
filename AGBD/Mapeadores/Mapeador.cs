@@ -256,16 +256,13 @@ public abstract class Mapeador<T> : IMapConParametros where T : class
         return AdoAGBD.TablaPorComando(Comando);
     }
 
-
-
-
     /// <summary>
     /// Método para obtener filas filtradas por igualdad en base al diccionario que recibe
     /// </summary>
     /// <param name="diccionario">Diccionario con nombre de atributo-valor</param>
     /// <param name="tabla">Nombre de la tabla, si se omita, se usa el nombre por defecto de la tabla del Mapeador</param>
     /// <returns>DataTable asociada a la consulta</returns>
-     public async Task<DataTable> FilasFiltradasRAWAsync(Dictionary<string, object> diccionario, string? tabla = null)
+    public async Task<DataTable> FilasFiltradasRAWAsync(Dictionary<string, object> diccionario, string? tabla = null)
     {
         PrepararComandoFilasFiltradas(diccionario, tabla);
         return await AdoAGBD.TablaPorComandoAsync(Comando);
@@ -307,7 +304,6 @@ public abstract class Mapeador<T> : IMapConParametros where T : class
     public async Task<List<T>> FilasFiltradasAsync(Dictionary<string, object> diccionario)
         => await ColeccionDesdeTablaAsync();
 
-    
     /// <summary>
     /// Método para obtener filas filtradas por igualdad en base a un atributo y valor.
     /// </summary>
@@ -317,14 +313,13 @@ public abstract class Mapeador<T> : IMapConParametros where T : class
     public List<T> FilasFiltradas(string atributo, object valor)
         => ColeccionDesdeTabla(FilasFiltradasRAW(atributo, valor));
 
-    
     /// <summary>
     /// Método para obtener filas filtradas asincronicamente por igualdad en base a un atributo y valor.
     /// </summary>
     /// <param name="atributo">Nombre del atributo a filtrar</param>
     /// <param name="valor">Valor para filtrar</param>
     /// <returns>Colección instanciada de <c>T</c> en base a <c>ObjetoDesdeFila</c></returns>
-     public async Task<List<T>> FilasFiltradasAsync(string atributo, object valor)
+    public async Task<List<T>> FilasFiltradasAsync(string atributo, object valor)
         => await ColeccionDesdeTablaAsync();
 
     /// <summary>
@@ -364,12 +359,8 @@ public abstract class Mapeador<T> : IMapConParametros where T : class
     public async Task<T?> FiltrarPorPKAsync(Dictionary<string, object> dictionary)
     {
         var coleccion = await FilasFiltradasAsync(dictionary);
-        return  coleccion.Count == 0 ? null : coleccion[0];
+        return coleccion.Count == 0 ? null : coleccion[0];
     }
-
-
-
-
 
     private Dictionary<string, object> DiccionarioPara(string atributo, object valor)
     {
