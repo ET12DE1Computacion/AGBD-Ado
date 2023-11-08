@@ -1,4 +1,4 @@
-﻿namespace AGBD.Test;
+namespace AGBD.Test.Core;
 
 public class Producto
 {

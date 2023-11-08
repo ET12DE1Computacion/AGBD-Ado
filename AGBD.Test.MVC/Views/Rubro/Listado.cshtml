@@ -1,0 +1,13 @@
+@using AGBD.Test.Core;
+@model IEnumerable<Rubro>;
+
+@{
+    ViewData["Title"] = "Listado";
+}
+
+<ul>
+@foreach(var rubro in Model)
+{
+    <li>@rubro.Nombre</li>
+}
+</ul>

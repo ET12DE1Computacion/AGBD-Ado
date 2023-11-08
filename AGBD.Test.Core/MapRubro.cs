@@ -2,7 +2,7 @@ using et12.edu.ar.AGBD.Mapeadores;
 using et12.edu.ar.AGBD.Ado;
 using System.Data;
 
-namespace AGBD.Test;
+namespace AGBD.Test.Core;
 
 public class MapRubro : Mapeador<Rubro>
 {

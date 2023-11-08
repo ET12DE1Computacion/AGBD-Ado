@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <ItemGroup>
+    <ProjectReference Include="..\AGBD.Test\AGBD.Test.csproj" />
+    <ProjectReference Include="..\AGBD\AGBD.csproj" />
+    <ProjectReference Include="..\AGBD.Test.Core\AGBD.Test.Core.csproj" />
+  </ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+</Project>

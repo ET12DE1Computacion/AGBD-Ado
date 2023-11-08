@@ -1,8 +1,8 @@
-﻿using et12.edu.ar.AGBD.Ado;
+using et12.edu.ar.AGBD.Ado;
 using et12.edu.ar.AGBD.Mapeadores;
 using System.Data;
 
-namespace AGBD.Test;
+namespace AGBD.Test.Core;
 public class MapProducto : Mapeador<Producto>
 {
     public MapRubro MapRubro { get; set; }

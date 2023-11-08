@@ -1,7 +1,7 @@
-﻿using et12.edu.ar.AGBD.Ado;
+using et12.edu.ar.AGBD.Ado;
 
-namespace AGBD.Test;
-public class AdoTest
+namespace AGBD.Test.Core;
+public class AdoTest : IAdo
 {
     public AdoAGBD Ado { get; set; }
     public MapRubro MapRubro { get; set; }
