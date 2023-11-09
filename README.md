@@ -1,4 +1,4 @@
-![main build.NET5](https://github.com/ET12DE1Computacion/AGBD-Ado/workflows/main-build.NET5/badge.svg?branch=main) ![dev build.NET5](https://github.com/ET12DE1Computacion/AGBD-Ado/workflows/dev-build.NET5/badge.svg?branch=dev) [![Abrir en Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/ET12DE1Computacion/AGBD-Ado)
+![main build.NET6](https://github.com/ET12DE1Computacion/AGBD-Ado/workflows/main-build.NET6/badge.svg?branch=main) ![dev build.NET5](https://github.com/ET12DE1Computacion/AGBD-Ado/workflows/dev-build.NET5/badge.svg?branch=dev) [![Abrir en Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/ET12DE1Computacion/AGBD-Ado)
 
 <h1 align="center">E.T. Nº12 D.E. 1º "Libertador Gral. José de San Martín"</h1>
 <p align="center">
@@ -20,7 +20,7 @@ git clone https://github.com/ET12DE1Computacion/AGBD-Ado
 ### Pre-requisitos 📋
 
 - .NET 6.0.10 (SDK .NET 6.0.402) [Descargar](https://dotnet.microsoft.com/download/dotnet/6.0)
-- MySQL Server 8.0.31 [Descargar](https://dev.mysql.com/downloads/mysql/)
+- MySQL Server 8.0.34 [Descargar](https://dev.mysql.com/downloads/mysql/)
 
 ## Despliegue 📦
 
