@@ -22,6 +22,7 @@ jobs:
 
     - name: Ejecutar el script SQL "install.sql"
       run: |
+        sleep 10
         docker exec mysql-db mysql -uroot -proot -e "source /docker-entrypoint-initdb.d/install.sql"
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v2
