@@ -18,7 +18,7 @@ jobs:
     - name: MySQL Setup
       run: |
         docker run --name mysql-db -e MYSQL_ROOT_PASSWORD=root -d -v ${{ github.workspace }}/scripts:/docker-entrypoint-initdb.d mysql:8.0.34
-        sleep 20
+        sleep 30
 
     - name: Ejecutar el script SQL "install.sql"
       run: |
